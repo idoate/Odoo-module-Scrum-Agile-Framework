@@ -6,8 +6,9 @@
         Framework for managing Scrum Team projects""",
 
     'description': """
-        This framework allows us to unify all the aspects in the agile methodologies work environment, the objective is
-         to relate the existing modules (Projects, Timesheets and Employees) in order to have a complete application..
+        This framework allows us to unify all the aspects in the agile methodologies work environment
+        The objective is to relate the existing modules (Projects, Timesheets and Employees) in order to have a complete application..
+        The icon comes from https://www.flaticon.es/iconos-gratis/mele"
     """,
 
     'author': "Iñigo Idoate Sagardia",
@@ -17,7 +18,7 @@
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Services/Project',
-    'version': '14.0.1.0',
+    'version': '14.0.2.0',
 
     # any module necessary for this one to work correctly
     'depends': [
