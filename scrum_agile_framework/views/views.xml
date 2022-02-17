@@ -18,7 +18,7 @@
     <!-- Shows the Product Backlog -->
     <record id='action_project_user_story' model='ir.actions.act_window'>
       <field name="name">Product Backlog</field>
-      <field name="res_model">scrum.user_story</field>
+      <field name="res_model">scrum_agile_framework.user_story</field>
       <field name="view_mode">tree,form</field>
       <field name="domain">[('project_id', '=', active_id)]</field>
       <field name="context">{'default_project_id': active_id}</field>
@@ -27,7 +27,7 @@
     <!-- Shows all the Sprints assigned to a project-->
     <record id='action_all_sprints' model='ir.actions.act_window'>
       <field name="name">Sprint</field>
-      <field name="res_model">scrum.sprint</field>
+      <field name="res_model">scrum_agile_framework.sprint</field>
       <field name="view_mode">tree,form</field>
       <field name="context">{'default_project_id': active_id}</field>
       <field name="domain">[('project_id', '=', active_id)]</field>
@@ -37,7 +37,7 @@
     <!-- PROJECT VIEWS -->
     <!-- Edited View of the module project.project -->
     <record id="view_project_kanban_scrum_inherited" model="ir.ui.view">
-      <field name="name">project.project.scrum.kanban.inherited</field>
+      <field name="name">project.project.scrum_agile_framework.kanban.inherited</field>
       <field name="model">project.project</field>
       <field name="inherit_id" ref="project.view_project_kanban"/>
       <field name="arch" type="xml">
@@ -185,8 +185,8 @@
     <!-- SPRINT VIEWS -->
     <!-- List View -->
     <record model="ir.ui.view" id="view_all_sprints_tree">
-      <field name="name">scrum.sprint.view.tree</field>
-      <field name="model">scrum.sprint</field>
+      <field name="name">scrum_agile_framework.sprint.view.tree</field>
+      <field name="model">scrum_agile_framework.sprint</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
@@ -199,8 +199,8 @@
 
     <!-- Form View -->
     <record model="ir.ui.view" id="view_all_sprints_form">
-      <field name="name">scrum.sprint.view.form</field>
-      <field name="model">scrum.sprint</field>
+      <field name="name">scrum_agile_framework.sprint.view.form</field>
+      <field name="model">scrum_agile_framework.sprint</field>
       <field name="arch" type="xml">
         <form string="Sprint">
           <sheet string="Sprint">
@@ -318,7 +318,7 @@
 
     <!-- Burndown chart View  -->
     <record id="sprint_analytic_graph_view" model="ir.ui.view" >
-      <field name="model">scrum.burn_down_chart</field>
+      <field name="model">scrum_agile_framework.burn_down_chart</field>
       <field name="arch" type="xml">
         <graph type="line" >
           <field name="date" type="row" interval="day"/>
@@ -331,9 +331,9 @@
 
     <!-- USER STORY VIEWS -->
     <!-- List View -->
-    <record id="scrum.user_story_list_view" model="ir.ui.view">
-      <field name="name">scrum.user_story.view.tree</field>
-      <field name="model">scrum.user_story</field>
+    <record id="scrum_agile_framework.user_story_list_view" model="ir.ui.view">
+      <field name="name">scrum_agile_framework.user_story.view.tree</field>
+      <field name="model">scrum_agile_framework.user_story</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
@@ -348,9 +348,9 @@
     </record>
 
     <!-- Form View -->
-    <record model="ir.ui.view" id="scrum.user_story_form_view">
-      <field name="name">scrum.user_story.view.form</field>
-      <field name="model">scrum.user_story</field>
+    <record model="ir.ui.view" id="scrum_agile_framework.user_story_form_view">
+      <field name="name">scrum_agile_framework.user_story.view.form</field>
+      <field name="model">scrum_agile_framework.user_story</field>
       <field name="arch" type="xml">
         <form string="Task information">
           <sheet>
@@ -438,7 +438,7 @@
 
     <!-- Quick create task-->
     <record id="quick_create_task_form" model="ir.ui.view">
-      <field name="name">scrum.task.form.quick_create</field>
+      <field name="name">scrum_agile_framework.task.form.quick_create</field>
       <field name="model">project.task</field>
       <field name="priority">1000</field>
       <field name="arch" type="xml">
@@ -470,7 +470,7 @@
           <field name="sprint_id"/>
         </field>
         <xpath expr="//kanban" position="attributes">
-          <attribute name="quick_create_view">scrum.quick_create_task_form</attribute>
+          <attribute name="quick_create_view">scrum_agile_framework.quick_create_task_form</attribute>
           <attribute name="default_group_by">scrum_stage</attribute>
         </xpath>
       </field>
@@ -524,9 +524,9 @@
 
     <!-- SCRUM TEAM VIEWS -->
     <!-- List View -->
-    <record id="scrum.team_list_view" model="ir.ui.view">
-      <field name="name">scrum.team.view.tree</field>
-      <field name="model">scrum.team</field>
+    <record id="scrum_agile_framework.team_list_view" model="ir.ui.view">
+      <field name="name">scrum_agile_framework.team.view.tree</field>
+      <field name="model">scrum_agile_framework.team</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
@@ -535,9 +535,9 @@
     </record>
 
     <!-- Form View -->
-    <record model="ir.ui.view" id="scrum.team_form_view">
-      <field name="name">scrum.team.view.form</field>
-      <field name="model">scrum.team</field>
+    <record model="ir.ui.view" id="scrum_agile_framework.team_form_view">
+      <field name="name">scrum_agile_framework.team.view.form</field>
+      <field name="model">scrum_agile_framework.team</field>
       <field name="arch" type="xml">
         <form string="Team Information">
           <sheet>
@@ -579,9 +579,9 @@
 
     <!-- MEETING VIEWS -->
     <!-- List View -->
-    <record model="ir.ui.view" id="scrum.meeting_list_view">
-      <field name="name">scrum.meeting.view.tree</field>
-      <field name="model">scrum.meeting</field>
+    <record model="ir.ui.view" id="scrum_agile_framework.meeting_list_view">
+      <field name="name">scrum_agile_framework.meeting.view.tree</field>
+      <field name="model">scrum_agile_framework.meeting</field>
       <field name="arch" type="xml">
         <tree>
           <field name="date"/>
@@ -592,9 +592,9 @@
     </record>
 
     <!-- Form View -->
-    <record model="ir.ui.view" id="scrum.meeting_form_view">
-      <field name="name">scrum.meeting.view.form</field>
-      <field name="model">scrum.meeting</field>
+    <record model="ir.ui.view" id="scrum_agile_framework.meeting_form_view">
+      <field name="name">scrum_agile_framework.meeting.view.form</field>
+      <field name="model">scrum_agile_framework.meeting</field>
       <field name="arch" type="xml">
         <form string="Meeting information">
           <sheet>
@@ -619,9 +619,9 @@
     </record>
 
     <!-- Calendar View -->
-    <record model="ir.ui.view" id="scrum.meeting_calendar_view">
-      <field name="name">scrum.meeting.view.calendar</field>
-      <field name="model">scrum.meeting</field>
+    <record model="ir.ui.view" id="scrum_agile_framework.meeting_calendar_view">
+      <field name="name">scrum_agile_framework.meeting.view.calendar</field>
+      <field name="model">scrum_agile_framework.meeting</field>
       <field name="arch" type="xml">
         <calendar string="Meeting Calendar" date_start="date" color="type" mode="month">
           <field name="type"/>
@@ -640,32 +640,32 @@
       <field name="res_model">project.project</field>
       <field name="view_mode">kanban,form</field>
       <field name="view_ids" eval="[(5, 0, 0),
-        (0, 0, {'view_mode': 'kanban', 'view_id': ref('scrum.project_project_kanban_view_scrum')}),
-        (0, 0, {'view_mode': 'form', 'view_id': ref('scrum.project_project_form_view_scrum')})]"/>
+        (0, 0, {'view_mode': 'kanban', 'view_id': ref('scrum_agile_framework.project_project_kanban_view_scrum')}),
+        (0, 0, {'view_mode': 'form', 'view_id': ref('scrum_agile_framework.project_project_form_view_scrum')})]"/>
     </record>
 
     <!-- Team Model -->
-    <record model="ir.actions.act_window" id="scrum.team_action_window">
+    <record model="ir.actions.act_window" id="scrum_agile_framework.team_action_window">
       <field name="name">Scrum Team</field>
-      <field name="res_model">scrum.team</field>
+      <field name="res_model">scrum_agile_framework.team</field>
       <field name="view_mode">tree,form</field>
     </record>
 
     <!-- Meeting Model -->
-    <record model="ir.actions.act_window" id="scrum.meeting_action_window">
+    <record model="ir.actions.act_window" id="scrum_agile_framework.meeting_action_window">
       <field name="name">Meeting</field>
-      <field name="res_model">scrum.meeting</field>
+      <field name="res_model">scrum_agile_framework.meeting</field>
       <field name="view_mode">tree,form,calendar</field>
       <field name="context">{'search_default_group_by_type':False}</field>
     </record>
 
     <!-- Top menu item -->
-    <menuitem name="Scrum Projects" id="scrum.menu_root"/>
+    <menuitem name="Scrum Projects" id="scrum_agile_framework.menu_root"/>
 
     <!-- Categories Menu -->
-    <menuitem name="Projects" id="project_project_menu" parent="scrum.menu_root" action="project_project_action_window"/>
-    <menuitem name="Scrum Team" id="scrum.team_menu" parent="scrum.menu_root" action="scrum.team_action_window"/>
-    <menuitem name="Meeting" id="scrum.meeting_menu" parent="scrum.menu_root" action="scrum.meeting_action_window"/>
+    <menuitem name="Projects" id="project_project_menu" parent="scrum_agile_framework.menu_root" action="project_project_action_window"/>
+    <menuitem name="Scrum Team" id="scrum_agile_framework.team_menu" parent="scrum_agile_framework.menu_root" action="scrum_agile_framework.team_action_window"/>
+    <menuitem name="Meeting" id="scrum_agile_framework.meeting_menu" parent="scrum_agile_framework.menu_root" action="scrum_agile_framework.meeting_action_window"/>
 
     <!-- Action to show the tasks of a sprint ordered by User Story -->
     <record id='action_sprint_kanban_tasks' model='ir.actions.act_window'>
@@ -673,8 +673,8 @@
       <field name="res_model">project.task</field>
       <field name="view_mode">kanban,form</field>
       <field name="view_ids" eval="[(5, 0, 0),
-        (0, 0, {'view_mode': 'kanban', 'view_id': ref('scrum.project_task_kanban_view_scrum')}),
-        (0, 0, {'view_mode': 'form', 'view_id': ref('scrum.project_task_form_view_scrum')})]"/>
+        (0, 0, {'view_mode': 'kanban', 'view_id': ref('scrum_agile_framework.project_task_kanban_view_scrum')}),
+        (0, 0, {'view_mode': 'form', 'view_id': ref('scrum_agile_framework.project_task_form_view_scrum')})]"/>
       <field name="help" type="html">
         <p class="o_view_nocontent_smiling_face">
           No tasks found. Let's create one!
@@ -687,7 +687,7 @@
     <!-- Action to show the burndown chart of a sprint -->
     <record id='action_sprint_burn' model='ir.actions.act_window'>
       <field name="name">Burns</field>
-      <field name="res_model">scrum.burn_down_chart</field>
+      <field name="res_model">scrum_agile_framework.burn_down_chart</field>
       <field name="view_mode">graph</field>
       <field name="view_id" ref="sprint_analytic_graph_view"/>
       <field name="search_view_id" ref="project_task_search_view_scrum"/>

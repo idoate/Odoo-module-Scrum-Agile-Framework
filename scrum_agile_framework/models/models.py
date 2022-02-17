@@ -7,24 +7,24 @@ class Project(models.Model):
 
     user_story_count = fields.Integer(compute='_compute_user_story_count')
     sprint_count = fields.Integer(compute='_compute_sprint_count')
-    last_sprint_id = fields.Many2one('scrum.sprint', compute='_get_last_sprint', store=True)
+    last_sprint_id = fields.Many2one('scrum_agile_framework.sprint', compute='_get_last_sprint', store=True)
 
     # RELATIONAL MODELS
-    sprint_ids = fields.One2many('scrum.sprint', 'project_id', string='Sprints')
-    user_story_ids = fields.One2many('scrum.user_story', 'project_id', string='Product backlog')
-    team_id = fields.Many2one('scrum.team', string='Scrum Team')
-    meeting_ids = fields.One2many('scrum.meeting', 'project_id', string='Meeting')
+    sprint_ids = fields.One2many('scrum_agile_framework.sprint', 'project_id', string='Sprints')
+    user_story_ids = fields.One2many('scrum_agile_framework.user_story', 'project_id', string='Product backlog')
+    team_id = fields.Many2one('scrum_agile_framework.team', string='Scrum Team')
+    meeting_ids = fields.One2many('scrum_agile_framework.meeting', 'project_id', string='Meeting')
 
     # METHODS
     def _compute_user_story_count(self):
-        user_story_data = self.env['scrum.user_story'].read_group(
+        user_story_data = self.env['scrum_agile_framework.user_story'].read_group(
             [('project_id', 'in', self.ids)], ['project_id'], ['project_id'])
         result = dict((data['project_id'][0], data['project_id_count']) for data in user_story_data)
         for project in self:
             project.user_story_count = result.get(project.id, 0)
 
     def _compute_sprint_count(self):
-        sprint_data = self.env['scrum.sprint'].read_group(
+        sprint_data = self.env['scrum_agile_framework.sprint'].read_group(
             [('project_id', 'in', self.ids)], ['project_id'], ['project_id'])
         result = dict((data['project_id'][0], data['project_id_count']) for data in sprint_data)
         for project in self:
@@ -41,7 +41,7 @@ class Project(models.Model):
 
 
 class Sprint(models.Model):
-    _name = 'scrum.sprint'
+    _name = 'scrum_agile_framework.sprint'
     _description = 'Allows defining the sprints assigned to a project'
     _order = 'date_start'
 
@@ -60,15 +60,15 @@ class Sprint(models.Model):
 
     # RELATIONAL MODELS
     project_id = fields.Many2one('project.project', string='Project', ondelete='cascade')
-    user_story_ids = fields.One2many('scrum.user_story', 'sprint_id', string='User stories')
+    user_story_ids = fields.One2many('scrum_agile_framework.user_story', 'sprint_id', string='User stories')
     task_ids = fields.One2many('project.task', 'sprint_id', string='Tasks')
     account_analytic_ids = fields.One2many('account.analytic.line', 'sprint_id', string='Timesheet')
-    burn_down_chart_ids = fields.One2many('scrum.burn_down_chart', 'sprint_id', string='Burndown charts')
+    burn_down_chart_ids = fields.One2many('scrum_agile_framework.burn_down_chart', 'sprint_id', string='Burndown charts')
 
     # METHODS
     def action_view_tasks_scrum(self):
         action = self.with_context(active_id=self.id, active_ids=self.ids) \
-            .env.ref('scrum.action_sprint_kanban_tasks') \
+            .env.ref('scrum_agile_framework.action_sprint_kanban_tasks') \
             .sudo().read()[0]
         action['display_name'] = self.name
         return action
@@ -80,7 +80,7 @@ class Sprint(models.Model):
         for sprint in self:
             sprint.sudo()._create_burndown_chart_values()
         action = self.with_context(active_id=self.id, active_ids=self.ids) \
-            .env.ref('scrum.action_sprint_burn') \
+            .env.ref('scrum_agile_framework.action_sprint_burn') \
             .sudo().read()[0]
         action['display_name'] = self.name
         return action
@@ -108,7 +108,7 @@ class Sprint(models.Model):
 
         for index, (day_date, hours_day) in enumerate(work_hours_data):
             vals_list.append(self._timesheet_prepare_line_values(day_date, hours_day))
-        self.env['scrum.burn_down_chart'].sudo().create(vals_list)
+        self.env['scrum_agile_framework.burn_down_chart'].sudo().create(vals_list)
 
     def _timesheet_task_prepare_line_values(self, day_date, remaining_amount):
         self.ensure_one()
@@ -152,7 +152,7 @@ class Sprint(models.Model):
 
 
 class UserStory(models.Model):
-    _name = 'scrum.user_story'
+    _name = 'scrum_agile_framework.user_story'
     _description = 'Allows you to manage the user stories of a project'
     _order = 'priority desc'
 
@@ -167,7 +167,7 @@ class UserStory(models.Model):
     # RELATIONAL MODELS
     project_id = fields.Many2one('project.project', string='Project', compute='_get_project_id_from_sprint',
                                  store=True, ondelete='cascade')
-    sprint_id = fields.Many2one('scrum.sprint', string='Sprint')
+    sprint_id = fields.Many2one('scrum_agile_framework.sprint', string='Sprint')
     task_ids = fields.One2many('project.task', 'user_story_id', string='Tasks')
 
     # METHODS
@@ -190,7 +190,7 @@ class UserStory(models.Model):
 
     def action_view_tasks_hu_scrum(self):
         action = self.with_context(active_id=self.id, active_ids=self.ids) \
-            .env.ref('scrum.action_hu_kanban_tasks') \
+            .env.ref('scrum_agile_framework.action_hu_kanban_tasks') \
             .sudo().read()[0]
         action['display_name'] = self.name
         return action
@@ -216,8 +216,8 @@ class Task(models.Model):
     # RELATIONAL MODELS
     project_id = fields.Many2one('project.project', string='Project', compute='_get_project_id', store=True,
                                  ondelete='cascade')
-    sprint_id = fields.Many2one('scrum.sprint', string='Sprint', compute='_get_sprint_id', store=True)
-    user_story_id = fields.Many2one('scrum.user_story', string='User Story', ondelete='cascade')
+    sprint_id = fields.Many2one('scrum_agile_framework.sprint', string='Sprint', compute='_get_sprint_id', store=True)
+    user_story_id = fields.Many2one('scrum_agile_framework.user_story', string='User Story', ondelete='cascade')
 
     # METHODS
     @api.depends('user_story_id.sprint_id')
@@ -238,7 +238,7 @@ class Task(models.Model):
 
 
 class Meeting(models.Model):
-    _name = 'scrum.meeting'
+    _name = 'scrum_agile_framework.meeting'
     _description = 'Allows defining routine meetings of the Scrum Team'
     _order = 'date'
 
@@ -250,7 +250,7 @@ class Meeting(models.Model):
 
     # RELATIONAL MODELS
     project_id = fields.Many2one('project.project', string='Project', ondelete='cascade')
-    team_id = fields.Many2one('scrum.team', string='Team', ondelete='cascade', compute='_get_team')
+    team_id = fields.Many2one('scrum_agile_framework.team', string='Team', ondelete='cascade', compute='_get_team')
 
     # METHODS
     @api.depends('type')
@@ -274,14 +274,14 @@ class Meeting(models.Model):
 
 
 class Team(models.Model):
-    _name = 'scrum.team'
+    _name = 'scrum_agile_framework.team'
     _description = 'Allows defining the members of the Scrum Team'
 
     name = fields.Char(string='Scrum Team name', required=True)
 
     # RELATIONAL MODELS
     project_ids = fields.One2many('project.project', 'team_id', string='Project')
-    meeting_ids = fields.One2many('scrum.meeting', 'team_id', string='Meeting')
+    meeting_ids = fields.One2many('scrum_agile_framework.meeting', 'team_id', string='Meeting')
     employee_ids = fields.Many2many('hr.employee', string='Employee')
 
 
@@ -294,7 +294,7 @@ class Employee(models.Model):
     responsibility = fields.Char(string='Responsibility')
 
     # RELATIONAL MODELS
-    team_ids = fields.Many2many('scrum.team', string='Team')
+    team_ids = fields.Many2many('scrum_agile_framework.team', string='Team')
 
 
 class AccountAnalytic(models.Model):
@@ -303,9 +303,9 @@ class AccountAnalytic(models.Model):
     remaining_amount = fields.Float(string='Remaining hours')
 
     # RELATIONAL MODELS
-    sprint_id = fields.Many2one('scrum.sprint', string='Sprint', compute='_get_sprint_id', store=True,
+    sprint_id = fields.Many2one('scrum_agile_framework.sprint', string='Sprint', compute='_get_sprint_id', store=True,
                                 ondelete='cascade')
-    burn_down_chart_ids = fields.One2many('scrum.burn_down_chart', 'timesheet_id',
+    burn_down_chart_ids = fields.One2many('scrum_agile_framework.burn_down_chart', 'timesheet_id',
                                           string='Burndown chart values')
 
     # METHODS
@@ -326,7 +326,7 @@ class AccountAnalytic(models.Model):
 
 
 class BurnDownChart(models.Model):
-    _name = 'scrum.burn_down_chart'
+    _name = 'scrum_agile_framework.burn_down_chart'
     _description = 'This class gets all the data from the timesheet to create the Burndown chart graph'
 
     name = fields.Char(string='Allows to distinguish between Remaining effort and Anticipated effort ')
@@ -334,5 +334,5 @@ class BurnDownChart(models.Model):
     hours_day = fields.Float(string='The number of hours per day', required=True)
 
     # RELATIONAL MODELS
-    sprint_id = fields.Many2one('scrum.sprint', string='Sprint', ondelete='cascade')
+    sprint_id = fields.Many2one('scrum_agile_framework.sprint', string='Sprint', ondelete='cascade')
     timesheet_id = fields.Many2one('account.analytic.line', string='Timesheet', ondelete='cascade')
