@@ -1,0 +1,69 @@
+<odoo>
+    <data>
+<!--
+        <template id="listing">
+          <ul>
+            <li t-foreach="objects" t-as="object">
+              <a t-attf-href="#{ root }/objects/#{ object.id }">
+                <t t-esc="object.display_name"/>
+              </a>
+            </li>
+          </ul>
+        </template>
+        <template id="object">
+          <h1><t t-esc="object.display_name"/></h1>
+          <dl>
+            <t t-foreach="object._fields" t-as="field">
+              <dt><t t-esc="field"/></dt>
+              <dd><t t-esc="object[field]"/></dd>
+            </t>
+          </dl>
+        </template>
+-->
+        <!--
+
+
+context="{'default_project_id': project_id, 'default_name':'Restante'}" domain="[('name', '=', 'Restante')]">
+
+        retro_well = fields.Text(string='¿Que ha ido bien en la interacción?')
+    retro_improvement = fields.Text(string='¿Que es mejorable?')
+    retro_improvement_action = fields.Text(string="¿Cuales son las acciones de mejora?")
+
+ <notebook>
+                  <page name="General" string="General">
+                        <field name="conclusions" type="html"/>
+                        <div class="d-none oe_clear"/>
+                    </page>
+                    <page name="Retrospectiva" string="Retospectiva">
+                       <div>
+                         <label for="retro_well" class="oe_inline" string="¿Que ha ido bien en la interacción?"/>
+                        <field name="retro_well" type="html"/>
+                        <div class="d-none oe_clear"/>
+                      </div>
+                      <div>
+                        <field name="retro_improvement" type="html" string="¿Que es mejorable?"/>
+                        <div class="d-none oe_clear"/>
+                      </div>
+                      <div>
+                        <field name="retro_improvement_action" type="html" string="¿Cuales son las acciones de mejora?"/>
+                        <div class="d-none oe_clear"/>
+                      </div>
+                    </page>
+                </notebook>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        -->
+    </data>
+</odoo>
