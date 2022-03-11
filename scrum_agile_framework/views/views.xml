@@ -335,7 +335,8 @@
       <field name="name">scrum_agile_framework.user_story.view.tree</field>
       <field name="model">scrum_agile_framework.user_story</field>
       <field name="arch" type="xml">
-        <tree>
+          <tree string="User stories" delete="0" multi_edit="1" sample="1">
+          <field name="sequence" optional="show" widget="handle"/>
           <field name="name"/>
           <field name="priority"/>
           <field name="planned_hours"/>

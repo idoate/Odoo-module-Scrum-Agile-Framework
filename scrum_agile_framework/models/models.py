@@ -154,10 +154,11 @@ class Sprint(models.Model):
 class UserStory(models.Model):
     _name = 'scrum_agile_framework.user_story'
     _description = 'Allows you to manage the user stories of a project'
-    _order = 'priority desc'
+    _order = 'sequence , priority desc, id desc'
 
     name = fields.Char(string='Name', required=True)
     priority = fields.Integer(string='Priority', required=True)
+    sequence = fields.Integer(default=10, help="Gives the sequence order when displaying a list of user stories.")
     planned_hours = fields.Float('Planned hours', compute='_compute_planned_hours_sum')
     effective_hours = fields.Float('Effective hours', compute='_compute_effective_hours_sum')
     state = fields.Char('State')
@@ -312,7 +313,8 @@ class AccountAnalytic(models.Model):
     @api.constrains('date')
     def _date_unique(self):
         if self.sprint_id:
-            date_counts = self.search_count([('date', '=', self.date), ('id', '!=', self.id)])
+            date_counts = self.search_count([('date', '=', self.date), ('id', '!=', self.id),
+                                             ('task_id.id', '=', self.task_id.id)])
             if date_counts > 0:
                 raise models.ValidationError('The date must be unique,'
                                              'if you want to add an input on this timesheet, modify the existing value.'
