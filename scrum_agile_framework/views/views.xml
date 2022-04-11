@@ -474,6 +474,9 @@
           <attribute name="quick_create_view">scrum_agile_framework.quick_create_task_form</attribute>
           <attribute name="default_group_by">scrum_stage</attribute>
         </xpath>
+        <field name="project_id" position="attributes">
+            <attribute name="attrs">{'invisible': 1}</attribute>
+        </field>
       </field>
     </record>
 
@@ -485,6 +488,7 @@
       <field name="mode">primary</field>
       <field name="arch" type="xml">
         <field name="project_id" position="after">
+          <field name="user_story_id" class="ml-auto"/>
           <field name="scrum_stage" class="ml-auto"/>
         </field>
         <field name="stage_id">
@@ -547,6 +551,7 @@
               <field name="name"/>
             </group>
             <group>
+             <div>
               <field name="employee_ids"  class="oe_inline oe_input_align" widget="many2many" >
                 <tree editable="bottom">
                   <field name="name" string="Name"/>
@@ -571,6 +576,7 @@
                   </div>
                 </form>
               </field>
+              </div>
             </group>
           </sheet>
         </form>
@@ -606,6 +612,7 @@
                 <field name="type" required="True"/>
               </group>
               <group>
+                <field name="date_delay" invisible="1"/>
                 <field name="duration"/>
               </group>
             </group>
@@ -624,7 +631,7 @@
       <field name="name">scrum_agile_framework.meeting.view.calendar</field>
       <field name="model">scrum_agile_framework.meeting</field>
       <field name="arch" type="xml">
-        <calendar string="Meeting Calendar" date_start="date" color="type" mode="month">
+        <calendar string="Meeting Calendar" date_start="date" color="type" mode="month" date_delay="date_delay">
           <field name="type"/>
           <field name="team_id"/>
           <field name="project_id"/>

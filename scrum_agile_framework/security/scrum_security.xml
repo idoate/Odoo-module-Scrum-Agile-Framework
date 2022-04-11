@@ -12,6 +12,13 @@
         <field name="comment">Product Owner role</field>
     </record>
 
+    <record model="res.groups" id = "group_scrum_customer">
+        <field name="name">Customer</field>
+        <field name="category_id" ref="scrum_agile_framework.module_category_scrum_agile_framework"/>
+        <field name="comment">Customer interested of using the app</field>
+    </record>
+
+
     <record model="res.groups" id = "group_scrum_scrum_manager">
         <field name="name">Scrum Manager</field>
         <field name="category_id" ref="scrum_agile_framework.module_category_scrum_agile_framework"/>

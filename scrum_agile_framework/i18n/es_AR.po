@@ -401,6 +401,12 @@ msgid "Product Owner"
 msgstr ""
 
 #. module: scrum_agile_framework
+#: model:ir.model.fields.selection,name:scrum_agile_framework.selection__hr_employee__role__cs
+#: model:res.groups,name:scrum_agile_framework.group_scrum_customer
+msgid "Customer"
+msgstr "Interesado"
+
+#. module: scrum_agile_framework
 #: model:res.groups,comment:scrum_agile_framework.group_scrum_product_owner
 msgid "Product Owner role"
 msgstr "Usuarios que actuan como Product Owner en un proyecto scrum"
@@ -761,3 +767,5 @@ msgstr "rol"
 #: model:ir.actions.act_window,name:scrum_agile_framework.action_sprint_kanban_tasks
 msgid "sprint.kanban.tasks"
 msgstr ""
+
+

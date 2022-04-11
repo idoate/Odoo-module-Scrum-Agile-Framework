@@ -14,6 +14,7 @@ class Project(models.Model):
     user_story_ids = fields.One2many('scrum_agile_framework.user_story', 'project_id', string='Product backlog')
     team_id = fields.Many2one('scrum_agile_framework.team', string='Scrum Team')
     meeting_ids = fields.One2many('scrum_agile_framework.meeting', 'project_id', string='Meeting')
+    #Hay que meter stakeholders
 
     # METHODS
     def _compute_user_story_count(self):
@@ -99,8 +100,9 @@ class Sprint(models.Model):
         )
         for task in self.task_ids:
             if task.scrum_stage == 'todo':
-                vals_list.append(
-                    self._timesheet_task_prepare_line_values(self.date_start, task.planned_hours))
+                for index, (day_date, hours_day) in enumerate(work_hours_data):
+                    vals_list.append(
+                        self._timesheet_task_prepare_line_values(day_date, task.planned_hours))
             else:
                 for timesheet in task.timesheet_ids:
                     vals_list.append(
@@ -243,7 +245,8 @@ class Meeting(models.Model):
     _description = 'Allows defining routine meetings of the Scrum Team'
     _order = 'date'
 
-    date = fields.Date('Date', required=True)
+    date = fields.Datetime(string='Date', required=True)
+    date_delay = fields.Float(string='Duration', compute='_get_duration_float', store=True)
     type = fields.Selection(string='Type', selection=[(
         'plan', 'Sprint Planning'), ('review', 'Sprint Review'), ('retrospective', 'Sprint Retrospective'),
         ('daily', 'Daily Scrum')], default='daily')
@@ -254,6 +257,18 @@ class Meeting(models.Model):
     team_id = fields.Many2one('scrum_agile_framework.team', string='Team', ondelete='cascade', compute='_get_team')
 
     # METHODS
+    @api.depends('type')
+    def _get_duration_float(self):
+        for meeting in self:
+            if meeting.type == 'daily':
+                meeting.date_delay = 0.25
+            elif meeting.type == 'review':
+                meeting.date_delay = 2.0
+            elif meeting.type == 'retrospective':
+                meeting.date_delay = 1.5
+            elif meeting.type == 'plan':
+                meeting.date_delay = 4.0
+
     @api.depends('type')
     def _get_duration(self):
         meeting_duration = {'daily': '15 minutes', 'review': '2 hours',
@@ -269,7 +284,8 @@ class Meeting(models.Model):
     def name_get(self):  # odoo's own function
         result = []
         for meeting in self:
-            description = f' {meeting.type} meeting of the Project: {meeting.project_id.name} '
+            description = dict(meeting._fields['type'].selection).get(meeting.type) +\
+                          f' Meeting of the Project: {meeting.project_id.name} '
             result.append((meeting.id, description))
         return result
 
@@ -288,6 +304,7 @@ class Team(models.Model):
 
 class Employee(models.Model):
     _inherit = 'hr.employee'
+    _order = 'role'
 
     role = fields.Selection(string='role', selection=[(
         'po', 'Product Owner'), ('sm', 'Scrum Manager'), ('dt', 'Development Team')], default='dt')
@@ -338,3 +355,7 @@ class BurnDownChart(models.Model):
     # RELATIONAL MODELS
     sprint_id = fields.Many2one('scrum_agile_framework.sprint', string='Sprint', ondelete='cascade')
     timesheet_id = fields.Many2one('account.analytic.line', string='Timesheet', ondelete='cascade')
+
+
+
+
